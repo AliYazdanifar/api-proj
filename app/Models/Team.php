@@ -14,4 +14,10 @@ class Team extends Model
         'description',
         'logo',
     ];
+
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'team_user')
+            ->withTimestamps();
+    }
 }
