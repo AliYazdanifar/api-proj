@@ -49,12 +49,18 @@ class User extends Authenticatable
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, 'team_user')
+            ->withPivot('role_id')
             ->withTimestamps();
     }
 
-    public function role(): BelongsTo
+    public function roles(): BelongsToMany
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsToMany(Role::class, 'team_user', 'user_id', 'role_id')
+            ->withTimestamps();
+    }
+    public function products()
+    {
+        return $this->morphToMany(Product::class,'productable')->withTimestamps();
     }
 
 }

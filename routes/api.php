@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\ProductController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,4 +22,13 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('user')->middleware('auth:sanctum')->group(function () {
     Route::get('token-info', [ApiAuthController::class, 'tokenInfo']);
+});
+
+
+Route::prefix('products')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->middleware('checkUserPermission:read')->name('products.index');
+    Route::get('/{product}', [ProductController::class, 'show'])->middleware('checkUserPermission:read')->name('products.show');
+    Route::post('/', [ProductController::class, 'store'])->middleware('checkUserPermission:write')->name('products.store');
+    Route::post('/{product}', [ProductController::class, 'update'])->middleware('checkUserPermission:update')->name('products.update');
+    Route::delete('/{product}', [ProductController::class, 'destroy'])->middleware('checkUserPermission:delete')->name('products.destroy');
 });

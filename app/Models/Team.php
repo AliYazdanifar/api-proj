@@ -20,4 +20,9 @@ class Team extends Model
         return $this->belongsToMany(User::class, 'team_user')
             ->withTimestamps();
     }
+
+    public function products()
+    {
+        return $this->morphToMany(Product::class,'productable');
+    }
 }
